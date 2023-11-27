@@ -1,0 +1,123 @@
+openapi: 3.0.0
+info:
+  description: This API handles event bookings and cancellations
+  version: "1.0.0"
+  title: Event Planning API
+  contact:
+    email: rchan200@my.bcit.ca
+tags:
+  - name: bookings
+    description: Operations available for bookings
+paths:
+  /bookings/book:
+    post:
+      tags:
+        - bookings
+      summary: Books an event
+      operationId: app.book
+      description: Create a booking with the specified information
+      responses:
+        '200':
+          description: booking created
+        '400':
+          description: 'invalid input'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Event'
+        description: Reading event to book
+        
+  /bookings/cancel:
+    post:
+      tags:
+        - bookings
+      summary: Cancel an event
+      operationId: app.cancel
+      description: Cancel a booking with the specified information
+      responses:
+        '200':
+          description: booking cancelled
+        '400':
+          description: 'invalid input'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EventCancel'
+        description: Reading event to cancel
+    
+  /health:
+    get:
+      description: Returns health status
+      operationId: app.health
+      responses:
+        '200':
+          description: Successfully returned health status
+        
+        
+components:
+  schemas:
+    Event:
+      required:
+        - event_id
+        - name
+        - venue
+        - date
+        - duration
+        - attendees
+      properties:
+        event_id:
+          type: integer
+          example: 1
+        name:
+          type: string
+          example: Bob's Birthday
+        venue:
+          type: string
+          example: Paul's Pizza
+        date:
+          type: string
+          format: date-time
+          example: '2023-09-28T13:30:00'
+        duration:
+          type: integer
+          example: 180
+        attendees:
+          type: integer
+          example: 10
+      type: object
+    
+    EventCancel:
+      required:
+        - cancel_id
+        - name
+        - venue
+        - date
+        - reason
+        - refund_price
+        - attendees
+      properties:
+        cancel_id:
+          type: integer
+          example: 2
+        name:
+          type: string
+          example: Cat Owner Meet-up
+        venue:
+          type: string
+          example: Leaf Park
+        date:
+          type: string
+          format: date-time
+          example: '2023-010-10T13:30:00'
+        reason:
+          type: string
+          example: thunderstorm
+        refund_price:
+          type: number
+          example: 5.00
+        attendees:
+          type: integer
+          example: 20
+      type: object
